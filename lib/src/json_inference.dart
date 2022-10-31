@@ -35,8 +35,8 @@ ValueType _estimateJsonFieldValueType(
       // If the map is empty, it's more likely to be an empty JSON map than a
       // JSON object with no fields, so treat it as such.
       return const TypedJsonMapValueType(
-        keyValueType: StringValueType(optional: false),
-        valueValueType: UnknownValueType(optional: true),
+        StringValueType(optional: false),
+        UnknownValueType(optional: true),
         optional: false,
       );
     }
@@ -50,14 +50,14 @@ ValueType _estimateJsonFieldValueType(
       // object like a map.
       final valueValueType = inferValueTypes(value.values);
       return TypedJsonMapValueType(
-        keyValueType: keyValueType,
-        valueValueType: valueValueType,
+        keyValueType,
+        valueValueType,
         optional: false,
       );
     }
 
     return TypedJsonObjectValueType(
-      fieldValueTypes: value.map(
+      value.map(
         (key, value) => MapEntry(key, _estimateJsonFieldValueType(key, value)),
       ),
       optional: false,
@@ -133,13 +133,13 @@ ValueType generalizeValueTypes(List<ValueType> valueTypes) {
       // Generalize typed JSON map types.
       if (allAre<TypedJsonMapValueType>()) {
         return TypedJsonMapValueType(
-          keyValueType: generalizeValueTypes(
+          generalizeValueTypes(
             relevantValueTypes
                 .cast<TypedJsonMapValueType>()
                 .map((valueType) => valueType.keyValueType)
                 .toList(growable: false),
           ) as ValueType<String, dynamic>,
-          valueValueType: generalizeValueTypes(
+          generalizeValueTypes(
             relevantValueTypes
                 .cast<TypedJsonMapValueType>()
                 .map((valueType) => valueType.valueValueType)
@@ -155,7 +155,7 @@ ValueType generalizeValueTypes(List<ValueType> valueTypes) {
           .whereType<TypedJsonObjectValueType>()
           .toList(growable: false);
       return TypedJsonObjectValueType(
-        fieldValueTypes: typedJsonObjectValueTypes
+        typedJsonObjectValueTypes
             .cast<TypedJsonObjectValueType>()
             .expand((valueType) => valueType.fieldValueTypes.entries)
             .fold<Map<String, List<ValueType>>>(
