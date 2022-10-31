@@ -2,9 +2,11 @@ import 'package:json_inference/src/value_type.dart';
 import 'package:json_inference/src/value_types/collection.dart';
 import 'package:json_inference/src/value_types/primitive.dart';
 
+/// Infers a [ValueType] representing the given JSON [value].
 ValueType inferValueType(Object? value) =>
     _estimateJsonFieldValueType(null, value);
 
+/// Infers the [ValueType] of multiple JSON [values] with the same structure.
 ValueType inferValueTypes(Iterable<dynamic> values) =>
     generalizeValueTypes(values.map(inferValueType).toList(growable: false));
 
@@ -67,6 +69,15 @@ ValueType _estimateJsonFieldValueType(
   throw UnsupportedError('Unsupported JSON value type: ${value.runtimeType}');
 }
 
+/// Merges multiple [ValueType]s together.
+///
+/// The resultant [ValueType] will correctly represent all of the given
+/// [ValueType]s, while being as detailed as possible.
+///
+/// See also:
+///
+/// * [ValueTypeInference], an extension on [ValueType] providing some shorthand
+///   functions for mutating [ValueType]s.
 ValueType generalizeValueTypes(List<ValueType> valueTypes) {
   // If any of the value types are optional, the final result must also be.
   final bool optional = valueTypes.any((valueType) => valueType.optional);
