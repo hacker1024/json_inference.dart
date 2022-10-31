@@ -197,7 +197,7 @@ ValueType generalizeValueTypes(List<ValueType> valueTypes) {
     }
   }
 
-  // If no generalizations could be made, fall back on a [NativeValueType] to
+  // If no generalizations could be made, fall back on a [PrimitiveValueType] to
   // treat the value as its native JSON/Dart type such as a string or map during
   // parsing.
   //
