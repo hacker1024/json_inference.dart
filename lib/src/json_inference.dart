@@ -209,3 +209,27 @@ ValueType generalizeValueTypes(List<ValueType> valueTypes) {
   // in the list of value types to generalize.
   return PrimitiveValueType<Object>(optional: optional);
 }
+
+extension ValueTypeInference<J, D> on ValueType<J, D> {
+  /// Merge two [ValueType]s together.
+  ///
+  /// This is equivalent to calling [generalizeValueTypes] with the two
+  /// [ValueType]s.
+  ///
+  /// See also:
+  ///
+  /// * [<<], which infers the [ValueType] of JSON data before generalizing the
+  ///   result with this [ValueType].
+  ValueType operator +(ValueType other) => generalizeValueTypes([this, other]);
+
+  /// Infer the [ValueType] of a JSON [value], and merge it with this
+  /// [ValueType].
+  ///
+  /// This is equivalent to calling [inferValueType] with the [value], and then
+  /// [generalizeValueTypes] with the inferred [ValueType] and this [ValueType].
+  ///
+  /// See also:
+  ///
+  /// * [+], which merges two existing [ValueType]s together.
+  ValueType operator <<(Object? value) => this + inferValueType(value);
+}
