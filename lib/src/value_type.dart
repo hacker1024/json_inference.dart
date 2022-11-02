@@ -31,6 +31,9 @@ abstract class ValueType<J, D> {
   }
 
   @override
+  String toString() => toJson().toString();
+
+  @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       other is ValueType<J, D> &&
