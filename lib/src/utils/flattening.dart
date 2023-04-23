@@ -2,6 +2,8 @@ import 'package:json_inference/src/value_type.dart';
 import 'package:json_inference/src/value_types/collection.dart';
 
 extension ValueTypeFlattening on ValueType {
+  /// Recursively traverses the [ValueType] children, producing a flat list of
+  /// [NestedObjectValueTypeEntry]s.
   Iterable<NestedObjectValueTypeEntry> flattenObjectTypes(
     String name, {
     NestedObjectValueTypeParentCategory parentCategory =
@@ -38,11 +40,31 @@ extension ValueTypeFlattening on ValueType {
   }
 }
 
-enum NestedObjectValueTypeParentCategory { root, object, map, list }
+/// The type of the parent of a [NestedObjectValueTypeEntry].
+enum NestedObjectValueTypeParentCategory {
+  /// The top-level JSON structure.
+  root,
 
+  /// A JSON object.
+  object,
+
+  /// A JSON object with arbitrary keys and consistently typed values.
+  map,
+
+  /// A JSON list.
+  list,
+}
+
+/// Metadata about a [TypedJsonObjectValueType] found during the flattening
+/// process.
 class NestedObjectValueTypeEntry<J, D> {
+  /// The key that the [valueType] was found at.
   final String name;
+
+  /// The type of the [valueType] parent.
   final NestedObjectValueTypeParentCategory parentCategory;
+
+  /// The [TypedJsonObjectValueType] that was found.
   final TypedJsonObjectValueType<J, D> valueType;
 
   const NestedObjectValueTypeEntry({
