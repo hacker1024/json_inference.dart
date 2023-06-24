@@ -1,7 +1,7 @@
-import 'package:json_inference/src/value_types/collection.dart';
-import 'package:json_inference/src/value_types/primitive.dart';
+part 'value_types/collection.dart';
+part 'value_types/primitive.dart';
 
-abstract class ValueType<J, D> {
+abstract base class ValueType<J, D> {
   final bool optional;
 
   const ValueType({required this.optional});
@@ -68,7 +68,7 @@ abstract class ValueType<J, D> {
   };
 }
 
-mixin SimpleValueTypeSerialization<J, D> on ValueType<J, D> {
+base mixin SimpleValueTypeSerialization<J, D> on ValueType<J, D> {
   @override
   Map<String, dynamic> toJson() => {'type': type, 'optional': optional};
 

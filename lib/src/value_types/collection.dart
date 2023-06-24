@@ -1,10 +1,10 @@
-import 'package:json_inference/src/value_type.dart';
+part of '../value_type.dart';
 
-abstract class CollectionValueType<J, D> extends ValueType<J, D> {
+abstract base class CollectionValueType<J, D> extends ValueType<J, D> {
   const CollectionValueType({required super.optional});
 }
 
-abstract class JsonObjectValueType<D>
+sealed class JsonObjectValueType<D>
     extends CollectionValueType<Map<String, dynamic>, D> {
   const JsonObjectValueType({required super.optional});
 
@@ -12,7 +12,7 @@ abstract class JsonObjectValueType<D>
   String get type => 'JSON object';
 }
 
-class TypedJsonObjectValueType<J, D>
+final class TypedJsonObjectValueType<J, D>
     extends JsonObjectValueType<Map<String, D>> {
   final Map<String, ValueType<J, D>> fieldValueTypes;
 
@@ -59,7 +59,8 @@ class TypedJsonObjectValueType<J, D>
   }
 }
 
-class TypedJsonMapValueType<K, J, D> extends JsonObjectValueType<Map<K, D>> {
+final class TypedJsonMapValueType<K, J, D>
+    extends JsonObjectValueType<Map<K, D>> {
   final ValueType<String, K> keyValueType;
   final ValueType<J, D> valueValueType;
 
@@ -112,14 +113,14 @@ class TypedJsonMapValueType<K, J, D> extends JsonObjectValueType<Map<K, D>> {
   }
 }
 
-abstract class ListValueType<D> extends CollectionValueType<List<dynamic>, D> {
+sealed class ListValueType<D> extends CollectionValueType<List<dynamic>, D> {
   const ListValueType({required super.optional});
 
   @override
   String get type => 'List';
 }
 
-class TypedListValueType<J, D> extends ListValueType<List<D>> {
+final class TypedListValueType<J, D> extends ListValueType<List<D>> {
   final ValueType elementValueType;
 
   const TypedListValueType(

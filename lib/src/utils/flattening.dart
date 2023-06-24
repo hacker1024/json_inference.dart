@@ -1,5 +1,4 @@
 import 'package:json_inference/src/value_type.dart';
-import 'package:json_inference/src/value_types/collection.dart';
 
 extension ValueTypeFlattening on ValueType {
   /// Recursively traverses the [ValueType] children, producing a flat list of

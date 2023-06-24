@@ -1,6 +1,6 @@
-import 'package:json_inference/src/value_type.dart';
+part of '../value_type.dart';
 
-class PrimitiveValueType<T> extends ValueType<T, T>
+base class PrimitiveValueType<T> extends ValueType<T, T>
     with SimpleValueTypeSerialization {
   const PrimitiveValueType({required super.optional});
 
@@ -19,7 +19,7 @@ class PrimitiveValueType<T> extends ValueType<T, T>
 ///
 /// This should be used in cases where a `null` value is encountered, and the
 /// type of the value cannot be determined without more sample data.
-class UnknownValueType extends PrimitiveValueType<dynamic>
+final class UnknownValueType extends PrimitiveValueType<dynamic>
     with SimpleValueTypeSerialization {
   const UnknownValueType({required super.optional})
       : assert(
@@ -38,7 +38,7 @@ class UnknownValueType extends PrimitiveValueType<dynamic>
       SimpleValueTypeSerialization.fromJson(json, UnknownValueType.new);
 }
 
-class StringValueType extends PrimitiveValueType<String>
+final class StringValueType extends PrimitiveValueType<String>
     with SimpleValueTypeSerialization {
   const StringValueType({required super.optional});
 
@@ -53,7 +53,7 @@ class StringValueType extends PrimitiveValueType<String>
       SimpleValueTypeSerialization.fromJson(json, StringValueType.new);
 }
 
-class NumberValueType<T extends num> extends PrimitiveValueType<T>
+final class NumberValueType<T extends num> extends PrimitiveValueType<T>
     with SimpleValueTypeSerialization {
   const NumberValueType({required super.optional});
 
@@ -68,7 +68,7 @@ class NumberValueType<T extends num> extends PrimitiveValueType<T>
       SimpleValueTypeSerialization.fromJson(json, NumberValueType.new);
 }
 
-class IntegerValueType extends NumberValueType<int>
+final class IntegerValueType extends NumberValueType<int>
     with SimpleValueTypeSerialization {
   const IntegerValueType({required super.optional});
 
@@ -83,7 +83,7 @@ class IntegerValueType extends NumberValueType<int>
       SimpleValueTypeSerialization.fromJson(json, IntegerValueType.new);
 }
 
-class DoubleValueType extends NumberValueType<double>
+final class DoubleValueType extends NumberValueType<double>
     with SimpleValueTypeSerialization {
   const DoubleValueType({required super.optional});
 
@@ -98,7 +98,7 @@ class DoubleValueType extends NumberValueType<double>
       SimpleValueTypeSerialization.fromJson(json, DoubleValueType.new);
 }
 
-class BooleanValueType extends PrimitiveValueType<bool>
+final class BooleanValueType extends PrimitiveValueType<bool>
     with SimpleValueTypeSerialization {
   const BooleanValueType({required super.optional});
 

@@ -1,6 +1,4 @@
 import 'package:json_inference/src/value_type.dart';
-import 'package:json_inference/src/value_types/collection.dart';
-import 'package:json_inference/src/value_types/primitive.dart';
 
 /// Infers a [ValueType] representing the given JSON [value].
 ValueType inferValueType(Object? value) =>
