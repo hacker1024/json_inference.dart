@@ -38,7 +38,8 @@ class TypedJsonObjectValueType<J, D>
 
   static TypedJsonObjectValueType fromJson(Map<String, dynamic> json) =>
       TypedJsonObjectValueType(
-        (json['fields'] as Map<String, Map<String, dynamic>>)
+        (json['fields'] as Map<String, dynamic>)
+            .cast<String, Map<String, dynamic>>()
             .map((key, value) => MapEntry(key, ValueType.fromJson(value))),
         optional: json['optional'] as bool,
       );
