@@ -1,6 +1,6 @@
 name: json_inference
 description: A Dart package providing functionality to infer JSON data types.
-version: 0.1.0
+version: 0.2.0
 homepage: https://github.com/hacker1024/json_inference.dart
 
 environment:
