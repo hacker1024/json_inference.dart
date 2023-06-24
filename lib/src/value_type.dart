@@ -75,6 +75,11 @@ mixin SimpleValueTypeSerialization<J, D> on ValueType<J, D> {
   static T fromJson<T extends ValueType>(
     Map<String, dynamic> json,
     T Function({required bool optional}) factory,
-  ) =>
-      factory(optional: json['optional'] as bool);
+  ) {
+    if (json case {'optional': final bool optional}) {
+      return factory(optional: optional);
+    } else {
+      throw FormatException('Invalid JSON for value type.', json);
+    }
+  }
 }

@@ -36,13 +36,27 @@ class TypedJsonObjectValueType<J, D>
             fieldValueTypes.map((key, value) => MapEntry(key, value.toJson())),
       };
 
-  static TypedJsonObjectValueType fromJson(Map<String, dynamic> json) =>
-      TypedJsonObjectValueType(
-        (json['fields'] as Map<String, dynamic>)
-            .cast<String, Map<String, dynamic>>()
-            .map((key, value) => MapEntry(key, ValueType.fromJson(value))),
-        optional: json['optional'] as bool,
+  static TypedJsonObjectValueType fromJson(Map<String, dynamic> json) {
+    if (json
+        case {
+          'fields': final Map<String, dynamic> fields,
+          'optional': final bool optional,
+        }) {
+      return TypedJsonObjectValueType(
+        fields.map(
+          (key, value) {
+            if (value is! Map<String, dynamic>) {
+              throw FormatException('Invalid field value type data.', value);
+            }
+            return MapEntry(key, ValueType.fromJson(value));
+          },
+        ),
+        optional: optional,
       );
+    } else {
+      throw FormatException('Invalid JSON object value type data.', json);
+    }
+  }
 }
 
 class TypedJsonMapValueType<K, J, D> extends JsonObjectValueType<Map<K, D>> {
@@ -77,13 +91,25 @@ class TypedJsonMapValueType<K, J, D> extends JsonObjectValueType<Map<K, D>> {
         'valueType': valueValueType.toJson(),
       };
 
-  static TypedJsonMapValueType fromJson(Map<String, dynamic> json) =>
-      TypedJsonMapValueType(
-        ValueType.fromJson(json['keyType'] as Map<String, dynamic>)
-            as ValueType<String, dynamic>,
-        ValueType.fromJson(json['valueType'] as Map<String, dynamic>),
-        optional: json['optional'] as bool,
+  static TypedJsonMapValueType fromJson(Map<String, dynamic> json) {
+    if (json
+        case {
+          'keyType': final Map<String, dynamic> keyTypeJson,
+          'valueType': final Map<String, dynamic> valueTypeJson,
+          'optional': final bool optional,
+        }) {
+      return TypedJsonMapValueType(
+        switch (ValueType.fromJson(keyTypeJson)) {
+          final ValueType<String, dynamic> keyType => keyType,
+          _ => throw FormatException('Invalid map key value type data.', json),
+        },
+        ValueType.fromJson(valueTypeJson),
+        optional: optional,
       );
+    } else {
+      throw FormatException('Invalid map value type data.', json);
+    }
+  }
 }
 
 abstract class ListValueType<D> extends CollectionValueType<List<dynamic>, D> {
@@ -118,9 +144,18 @@ class TypedListValueType<J, D> extends ListValueType<List<D>> {
         'elementType': elementValueType.toJson(),
       };
 
-  static TypedListValueType fromJson(Map<String, dynamic> json) =>
-      TypedListValueType(
-        ValueType.fromJson(json['elementType'] as Map<String, dynamic>),
-        optional: json['optional'] as bool,
+  static TypedListValueType fromJson(Map<String, dynamic> json) {
+    if (json
+        case {
+          'elementType': final Map<String, dynamic> elementTypeJson,
+          'optional': final bool optional,
+        }) {
+      return TypedListValueType(
+        ValueType.fromJson(elementTypeJson),
+        optional: optional,
       );
+    } else {
+      throw FormatException('Invalid list value type data.', json);
+    }
+  }
 }
