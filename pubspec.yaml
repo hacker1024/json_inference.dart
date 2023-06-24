@@ -4,7 +4,7 @@ version: 0.1.0
 homepage: https://github.com/hacker1024/json_inference.dart
 
 environment:
-  sdk: '>=2.18.0 <3.0.0'
+  sdk: '>=3.0.0 <4.0.0'
 
 dev_dependencies:
-  lint: ^2.0.1
+  lint: ^2.1.2
